@@ -23,4 +23,4 @@ EXPOSE 8000
 # Default (web) command — Uvicorn with multiple worker processes (async ASGI).
 # Railway provides $PORT; the worker service overrides this command
 # with: arq app.workers.worker.WorkerSettings  (see railway.toml).
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-4}"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-2}"]
