@@ -1,7 +1,7 @@
 """FastAPI application entrypoint (fully async).
 
-Run with multiple Uvicorn workers behind Gunicorn; scale horizontally behind a load
-balancer. The app tier is stateless — all state lives in Supabase/Postgres, Redis, storage.
+Run with multiple Uvicorn worker processes (uvicorn --workers N); scale horizontally behind
+a load balancer. The app tier is stateless — all state lives in Supabase/Postgres, Redis, storage.
 """
 from fastapi import FastAPI
 

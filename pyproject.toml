@@ -10,7 +10,6 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.111",
     "uvicorn[standard]>=0.30",
-    "gunicorn>=22.0",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
     "sqlalchemy[asyncio]>=2.0",
@@ -25,7 +24,9 @@ dependencies = [
     "sentry-sdk>=2.5",
 ]
 
-# Managed by uv. `uv sync` installs the project + the dev group below and writes uv.lock.
+# Server: Uvicorn (ASGI, async). Dev: `uvicorn app.main:app --reload`.
+# Prod: `uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers N` (multi-process).
+
 [dependency-groups]
 dev = [
     "ruff>=0.4",
@@ -34,8 +35,7 @@ dev = [
 ]
 
 [tool.uv]
-# uv creates and manages .venv and the uv.lock lockfile (commit uv.lock to the repo).
-# The "dev" dependency-group is installed by default; use `uv sync --no-dev` for prod.
+# uv manages .venv and uv.lock (commit uv.lock). dev group installs by default; --no-dev for prod.
 
 [tool.setuptools.packages.find]
 include = ["app*"]

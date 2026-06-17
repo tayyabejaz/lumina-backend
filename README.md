@@ -6,7 +6,7 @@ requests/second) by staying fully asynchronous and horizontally stateless.
 
 ## Stack
 
-- **FastAPI** (async) + Pydantic v2 · served by Gunicorn + Uvicorn workers
+- **FastAPI** (async) + Pydantic v2 · served by **Uvicorn** (multi-worker ASGI)
 - **Supabase** — managed PostgreSQL (+ Auth, Storage). Connect via the **Supavisor pooler**
   (transaction mode) so huge client concurrency multiplexes onto a small DB pool
 - **SQLAlchemy 2.0 async** + **asyncpg** driver
@@ -92,7 +92,7 @@ cp .env.example .env           # set Supabase pooler URL + keys
 uv run alembic upgrade head
 uv run uvicorn app.main:app --reload              # API (dev)
 uv run arq app.workers.worker.WorkerSettings      # worker pool
-# prod: uv sync --no-dev  then  gunicorn -k uvicorn.workers.UvicornWorker -w <N> app.main:app
+# prod: uv sync --no-dev  then  uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers <N>
 ```
 
 Common uv commands: `uv add <pkg>` (add a dep), `uv add --dev <pkg>` (dev dep),

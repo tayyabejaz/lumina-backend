@@ -20,6 +20,7 @@ RUN uv sync --no-dev
 
 EXPOSE 8000
 
-# Default (web) command. Railway provides $PORT; the worker service overrides this command
+# Default (web) command — Uvicorn with multiple worker processes (async ASGI).
+# Railway provides $PORT; the worker service overrides this command
 # with: arq app.workers.worker.WorkerSettings  (see railway.toml).
-CMD ["sh", "-c", "gunicorn app.main:app -k uvicorn.workers.UvicornWorker -w ${WEB_CONCURRENCY:-4} -b 0.0.0.0:${PORT:-8000} --timeout 60"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-4}"]
