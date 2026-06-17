@@ -1,0 +1,16 @@
+# Railway config for the WEB service (builds from the Dockerfile in this folder).
+# Create a SECOND Railway service for the worker in the same project, pointing at the same
+# repo/folder, and override its start command to:
+#   arq app.workers.worker.WorkerSettings
+# (see Deployment.md). Both services share the same env vars / Redis / Supabase.
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "gunicorn app.main:app -k uvicorn.workers.UvicornWorker -w ${WEB_CONCURRENCY:-4} -b 0.0.0.0:${PORT} --timeout 60"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

@@ -1,0 +1,9 @@
+"""Async worker pool (arq on Redis). Runs free-text marking, plan generation, analytics
+rollups, email/push. Jobs are idempotent with retries + dead-letter (ADR-011)."""
+async def mark_free_text(ctx, attempt_id: str) -> None: ...
+async def generate_plan(ctx, student_id: str) -> None: ...
+async def rollup_progress(ctx) -> None: ...
+
+
+class WorkerSettings:
+    functions = [mark_free_text, generate_plan, rollup_progress]
